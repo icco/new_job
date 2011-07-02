@@ -20,7 +20,9 @@ puts "#{user}'s GitHub repos:"
 ascii_table = table do |t|
    t.headings = ["Project Name", "Date", "Description"]
    client.repos(user).each do |repo|
-      t << [ repo.name,Date.parse(repo.created_at).to_s, repo.description]
+      if !repo.fork?
+         t << [ repo.name,Date.parse(repo.created_at).to_s, repo.description]
+      end
    end
 end
 
