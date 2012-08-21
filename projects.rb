@@ -12,7 +12,7 @@ user = gets.chomp
 print "Enter your github password: "
 token = gets.chomp
 
-client = Octokit::Client.new(:login => user, :password => token)
+client = Octokit::Client.new(:login => user, :password => token, :auto_traversal => true)
 
 puts "#{user}'s GitHub repos:"
 
