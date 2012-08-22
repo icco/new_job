@@ -12,9 +12,7 @@ require 'optparse'
 
 options = {}
 
-optparse = OptionParser.new do|opts|
-  # Set a banner, displayed at the top
-  # of the help screen.
+optparse = OptionParser.new do |opts|
   opts.banner = "Usage: projects.rb [options]"
 
   options[:display] = "table"
@@ -22,8 +20,11 @@ optparse = OptionParser.new do|opts|
     options[:display] = type
   end
 
-  # This displays the help screen, all programs are
-  # assumed to have this option.
+  options[:user] = nil
+  opts.on( '-u', '--user username', 'Which user to pull repos from.' ) do |user|
+    options[:user] = user
+  end
+
   opts.on( '-h', '--help', 'Display this screen' ) do
     puts opts
     exit
@@ -32,8 +33,12 @@ end
 
 optparse.parse!
 
-print "Enter your github username: "
-user = gets.chomp
+if options[:user].nil?
+  print "Enter your github username: "
+  user = gets.chomp
+else
+  user = options[:user]
+end
 
 print "Enter your github password: "
 token = STDIN.noecho(&:gets)
