@@ -1,5 +1,4 @@
 source :rubygems
 
 gem "octokit"
-gem "password"
-gem "terminal-table"
+gem "terminal-table", :require => "terminal-table/import"
