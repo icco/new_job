@@ -4,18 +4,17 @@ require 'time'
 require 'date'
 require 'octokit' # gem install octokit
 require 'terminal-table/import' # gem install terminal-table
+require 'password'
 
 
 print "Enter your github username: "
 user = gets.chomp
 
-print "Enter your github password: "
-token = gets.chomp
+token = Password.get "Enter your github password: "
 
 client = Octokit::Client.new(:login => user, :password => token, :auto_traversal => true)
 
 puts "#{user}'s GitHub repos:"
-
 
 ascii_table = table do |t|
    t.headings = ["Project Name", "Date", "Description"]
