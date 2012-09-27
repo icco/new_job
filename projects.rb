@@ -16,8 +16,13 @@ optparse = OptionParser.new do |opts|
   opts.banner = "Usage: projects.rb [options]"
 
   options[:display] = "table"
-  opts.on( '-d', '--display {table,list}', 'Define display type.' ) do |type|
+  opts.on( '-d', '--display {table,list}', "Define display type. Default: #{options[:display]}" ) do |type|
     options[:display] = type
+  end
+
+  options[:sort] = "alpha"
+  opts.on( '-s', '--sort {alpha,date}', "Define sort type. Default: #{options[:sort]}" ) do |type|
+    options[:sort] = type
   end
 
   options[:user] = nil
@@ -48,10 +53,17 @@ client = Octokit::Client.new(:login => user, :password => token.strip, :auto_tra
 puts ""
 puts "#{user}'s GitHub repos:"
 
+repos = []
+if options[:sort] == "alpha"
+  repos = client.repos(user, :sort => 'full_name')
+elsif options[:sort] == "date"
+  repos = client.repos(user, :sort => 'created')
+end
+
 if options[:display] == "table"
   ascii_table = table do |t|
     t.headings = ["Project Name", "Date", "Description"]
-    client.repos(user).each do |repo|
+    repos.each do |repo|
       if !repo.fork?
         t << [ repo.name, Date.parse(repo.created_at).to_s, repo.description ]
       end
@@ -60,17 +72,17 @@ if options[:display] == "table"
 
   puts ascii_table
 elsif options[:display] == "list"
-  client.repos(user).each do |repo|
+  repos.each do |repo|
     if !repo.fork?
       puts " * #{repo.name} - #{Date.parse(repo.created_at).to_s}"
-      puts "   * #{repo.homepage}" if !repo.homepage.nil? && !repo.homepage.empty?
-      puts "   * #{repo.html_url}" if !repo.private
+      puts "   * #{repo.homepage}"    if !repo.homepage.nil? && !repo.homepage.empty?
+      puts "   * #{repo.html_url}"    if !repo.private
       puts "   * #{repo.description}" if !repo.description.nil? && !repo.description.empty?
       puts ""
     end
   end
 elsif options[:display] == "dump"
-  client.repos(user).each do |repo|
+  repos.each do |repo|
     p repo if !repo.fork?
     puts ""
   end
