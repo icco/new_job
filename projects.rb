@@ -7,7 +7,6 @@ Bundler.require
 
 require 'time'
 require 'date'
-require 'io/console'
 require 'optparse'
 
 options = {}
