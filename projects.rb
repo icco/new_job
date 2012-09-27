@@ -45,11 +45,10 @@ end
 $stderr.print "Enter your github password: "
 token = STDIN.noecho(&:gets)
 
-puts ""
+$stderr.puts ""
 
 client = Octokit::Client.new(:login => user, :password => token.strip, :auto_traversal => true)
 
-puts ""
 puts "#{user}'s GitHub repos:"
 
 repos = []
