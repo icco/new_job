@@ -5,13 +5,13 @@ require 'bundler'
 
 Bundler.require
 
-require 'time'
 require 'date'
 require 'optparse'
+require 'time'
 
+# Argument parsing
 options = {}
-
-optparse = OptionParser.new do |opts|
+OptionParser.new do |opts|
   opts.banner = "Usage: projects.rb [options]"
 
   options[:display] = "table"
@@ -33,9 +33,7 @@ optparse = OptionParser.new do |opts|
     puts opts
     exit
   end
-end
-
-optparse.parse!
+end.parse!
 
 if options[:user].nil?
   print "Enter your github username: "
