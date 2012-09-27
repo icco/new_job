@@ -36,14 +36,16 @@ OptionParser.new do |opts|
 end.parse!
 
 if options[:user].nil?
-  print "Enter your github username: "
+  $stderr.print "Enter your github username: "
   user = gets.chomp
 else
   user = options[:user]
 end
 
-print "Enter your github password: "
+$stderr.print "Enter your github password: "
 token = STDIN.noecho(&:gets)
+
+puts ""
 
 client = Octokit::Client.new(:login => user, :password => token.strip, :auto_traversal => true)
 
