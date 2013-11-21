@@ -24,9 +24,9 @@ OptionParser.new do |opts|
     options[:sort] = type
   end
 
-  options[:user] = nil
-  opts.on( '-u', '--user username', 'Which user to pull repos from.' ) do |user|
-    options[:user] = user
+  options[:token] = nil
+  opts.on( '-t', '--token <40 char auth token>', 'User\' auth token.' ) do |user|
+    options[:token] = user
   end
 
   options[:netrc] = File.exists? File.expand_path('~/.netrc')
@@ -40,13 +40,19 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-if options[:netrc]
-  client = Octokit::Client.new(:netrc => true, :auto_traversal => true)
-else
-  $stderr.print "Enter your github auth token: "
-  token = gets.chomp
+Octokit.auto_paginate = true
 
-  client = Octokit::Client.new(:access_token => token, :auto_traversal => true)
+if options[:netrc]
+  client = Octokit::Client.new(:netrc => true)
+else
+  if options[:token].nil?
+    $stderr.print "Enter your github auth token: "
+    token = gets.chomp
+  else
+    token = options[:token]
+  end
+
+  client = Octokit::Client.new(:access_token => token)
 end
 
 puts "#{client.login}'s GitHub repos:"
