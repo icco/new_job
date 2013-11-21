@@ -63,7 +63,7 @@ if options[:display] == "table"
     t.headings = ["Project Name", "Date", "Description"]
     repos.each do |repo|
       if !repo.fork?
-        t << [ repo.name, Date.parse(repo.created_at).to_s, repo.description ]
+        t << [ repo.name, repo.created_at.strftime('%F'), repo.description ]
       end
     end
   end
