@@ -1,4 +1,4 @@
-source :rubygems
+source 'https://rubygems.org'
 
 gem "io-console", :require => "io/console"
 gem "octokit"
