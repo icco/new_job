@@ -29,33 +29,42 @@ OptionParser.new do |opts|
     options[:user] = user
   end
 
+  options[:netrc] = File.exists? File.expand_path('~/.netrc')
+  opts.on("-n", "--[no-]netrc", "Force use netrc.") do |netrc|
+    options[:netrc] = netrc
+  end
+
   opts.on( '-h', '--help', 'Display this screen' ) do
     puts opts
     exit
   end
 end.parse!
 
-if options[:user].nil?
-  $stderr.print "Enter your github username: "
-  user = gets.chomp
+if options[:netrc]
+  client = Octokit::Client.new(:netrc => true, :auto_traversal => true)
 else
-  user = options[:user]
+  if options[:user].nil?
+    $stderr.print "Enter your github username: "
+    user = gets.chomp
+  else
+    user = options[:user]
+  end
+
+  $stderr.print "Enter your github password: "
+  token = STDIN.noecho(&:gets)
+
+  $stderr.puts ""
+
+  client = Octokit::Client.new(:login => user, :password => token.strip, :auto_traversal => true)
 end
 
-$stderr.print "Enter your github password: "
-token = STDIN.noecho(&:gets)
-
-$stderr.puts ""
-
-client = Octokit::Client.new(:login => user, :password => token.strip, :auto_traversal => true)
-
-puts "#{user}'s GitHub repos:"
+puts "#{client.login}'s GitHub repos:"
 
 repos = []
 if options[:sort] == "alpha"
-  repos = client.repos(user, :sort => 'full_name')
+  repos = client.repos(client.login, :sort => 'full_name')
 elsif options[:sort] == "date"
-  repos = client.repos(user, :sort => 'created')
+  repos = client.repos(client.login, :sort => 'created')
 end
 
 if options[:display] == "table"
