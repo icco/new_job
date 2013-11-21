@@ -43,19 +43,10 @@ end.parse!
 if options[:netrc]
   client = Octokit::Client.new(:netrc => true, :auto_traversal => true)
 else
-  if options[:user].nil?
-    $stderr.print "Enter your github username: "
-    user = gets.chomp
-  else
-    user = options[:user]
-  end
+  $stderr.print "Enter your github auth token: "
+  token = gets.chomp
 
-  $stderr.print "Enter your github password: "
-  token = STDIN.noecho(&:gets)
-
-  $stderr.puts ""
-
-  client = Octokit::Client.new(:login => user, :password => token.strip, :auto_traversal => true)
+  client = Octokit::Client.new(:access_token => token, :auto_traversal => true)
 end
 
 puts "#{client.login}'s GitHub repos:"
