@@ -78,9 +78,9 @@ if options[:display] == "table"
 elsif options[:display] == "list"
   repos.each do |repo|
     if !repo.fork?
-      puts " * #{repo.name} - #{Date.parse(repo.created_at).to_s}"
+      puts " * #{repo.name} - #{repo.created_at.strftime('%F')}"
       puts "   * #{repo.homepage}"    if !repo.homepage.nil? && !repo.homepage.empty?
-      puts "   * #{repo.html_url}"    if !repo.private
+      puts "   * #{repo.url}"    if !repo.private
       puts "   * #{repo.description}" if !repo.description.nil? && !repo.description.empty?
       puts ""
     end
