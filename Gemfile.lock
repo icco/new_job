@@ -7,7 +7,7 @@ GEM
     io-console (0.4.2)
     multipart-post (1.2.0)
     netrc (0.7.7)
-    octokit (2.6.0)
+    octokit (2.6.1)
       sawyer (~> 0.5.1)
     sawyer (0.5.1)
       addressable (~> 2.3.5)
