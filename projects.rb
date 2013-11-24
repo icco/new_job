@@ -25,7 +25,7 @@ OptionParser.new do |opts|
   end
 
   options[:token] = nil
-  opts.on( '-t', '--token <40 char auth token>', 'User\' auth token.' ) do |user|
+  opts.on( '-t', '--token <40 char auth token>', 'User\'s auth token.' ) do |user|
     options[:token] = user
   end
 
@@ -80,7 +80,13 @@ elsif options[:display] == "list"
     if !repo.fork?
       puts " * #{repo.name} - #{repo.created_at.strftime('%F')}"
       puts "   * #{repo.homepage}"    if !repo.homepage.nil? && !repo.homepage.empty?
-      puts "   * #{repo.url}"    if !repo.private
+      if !repo.private
+        if not repo.url.nil?
+          puts "   * #{repo.url}"
+        else
+          puts "   * http://github.com/#{client.login}/#{repo.name}"
+        end
+      end
       puts "   * #{repo.description}" if !repo.description.nil? && !repo.description.empty?
       puts ""
     end
