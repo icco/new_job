@@ -81,8 +81,8 @@ elsif options[:display] == "list"
       puts " * #{repo.name} - #{repo.created_at.strftime('%F')}"
       puts "   * #{repo.homepage}"    if !repo.homepage.nil? && !repo.homepage.empty?
       if !repo.private
-        if not repo.url.nil?
-          puts "   * #{repo.url}"
+        if not repo.html_url.nil?
+          puts "   * #{repo.html_url}"
         else
           puts "   * http://github.com/#{client.login}/#{repo.name}"
         end
