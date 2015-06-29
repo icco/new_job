@@ -65,7 +65,7 @@ elsif options[:sort] == "date"
 end
 
 if options[:display] == "table"
-  ascii_table = table do |t|
+  ascii_table = Terminal::Table.new do |t|
     t.headings = ["Project Name", "Date", "Description"]
     repos.each do |repo|
       if !repo.fork?
