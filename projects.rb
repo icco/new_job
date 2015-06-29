@@ -29,8 +29,8 @@ OptionParser.new do |opts|
     options[:token] = user
   end
 
-  options[:netrc] = File.exists? File.expand_path('~/.netrc')
-  opts.on("-n", "--[no-]netrc", "Force use netrc.") do |netrc|
+  options[:netrc] = false
+  opts.on("-n", "--[no-]netrc", "Use netrc.") do |netrc|
     options[:netrc] = netrc
   end
 
