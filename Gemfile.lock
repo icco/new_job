@@ -7,12 +7,12 @@ GEM
     io-console (0.4.3)
     multipart-post (2.0.0)
     netrc (0.10.3)
-    octokit (4.0.0)
+    octokit (4.0.1)
       sawyer (~> 0.6.0, >= 0.5.3)
     sawyer (0.6.0)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
-    terminal-table (1.5.1)
+    terminal-table (1.5.2)
 
 PLATFORMS
   ruby
