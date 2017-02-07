@@ -15,7 +15,7 @@ OptionParser.new do |opts|
   opts.banner = "Usage: projects.rb [options]"
 
   options[:display] = "table"
-  opts.on( '-d', '--display {table,list}', "Define display type. Default: #{options[:display]}" ) do |type|
+  opts.on( '-d', '--display {table,list,columns}', "Define display type. Default: #{options[:display]}" ) do |type|
     options[:display] = type
   end
 
@@ -64,7 +64,8 @@ elsif options[:sort] == "date"
   repos = client.repos(client.login, :sort => 'created')
 end
 
-if options[:display] == "table"
+case options[:display]
+when "table"
   ascii_table = Terminal::Table.new do |t|
     t.headings = ["Project Name", "Date", "Description"]
     repos.each do |repo|
@@ -75,7 +76,7 @@ if options[:display] == "table"
   end
 
   puts ascii_table
-elsif options[:display] == "list"
+when "list"
   repos.each do |repo|
     if !repo.fork?
       puts " * #{repo.name} - #{repo.created_at.strftime('%F')}"
@@ -91,9 +92,13 @@ elsif options[:display] == "list"
       puts ""
     end
   end
-elsif options[:display] == "dump"
+when "dump"
   repos.each do |repo|
     p repo if !repo.fork?
     puts ""
+  end
+when "columns"
+  repos.each do |repo|
+    print " #{repo.name},#{repo.created_at.strftime('%F')},#{repo.html_url} |"
   end
 end
