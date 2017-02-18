@@ -80,15 +80,15 @@ when "list"
   repos.each do |repo|
     next if repo.fork?
     puts " * #{repo.name} - #{repo.created_at.strftime("%F")}"
-    puts "   * #{repo.homepage}" if !repo.homepage.nil? && !repo.homepage.empty?
+    puts "    * #{repo.homepage}" if !repo.homepage.nil? && !repo.homepage.empty?
     unless repo.private
       if !repo.html_url.nil?
-        puts "   * #{repo.html_url}"
+        puts "    * #{repo.html_url}"
       else
-        puts "   * http://github.com/#{client.login}/#{repo.name}"
+        puts "    * http://github.com/#{client.login}/#{repo.name}"
       end
     end
-    puts "   * #{repo.description}" if !repo.description.nil? && !repo.description.empty?
+    puts "    * #{repo.description}" if !repo.description.nil? && !repo.description.empty?
     puts ""
   end
 when "dump"
